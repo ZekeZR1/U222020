@@ -1,18 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter(Collider col)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (col.tag == "Bullet")
+        {
+            var toObjectVec = col.gameObject.transform.position - this.transform.position;
+            var forwardVec = this.transform.forward;
+            var deg = Vector3.Dot(toObjectVec.normalized, forwardVec.normalized);
+            if (deg > 0.7f)
+            {
+                Debug.Log("blocked!!");
+            }
+            else
+            {
+                Debug.Log("Dead!!");
+            }
+        }
     }
 }
