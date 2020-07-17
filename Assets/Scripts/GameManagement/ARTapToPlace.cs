@@ -31,15 +31,15 @@ public class ARTapToPlace : MonoBehaviour
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
-        //calc dot
-        var arcrot = arCamera.transform.rotation;
-
-        text.GetComponent<Text>().text = "";
-
-
         if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            Instantiate(objectToPlace, PlacementPose.position, PlacementPose.rotation);
+            text.GetComponent<Text>().text = "Touched ";// + PlacementPose.position;
+            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                text.GetComponent<Text>().text = "Placed at " + PlacementPose.position;
+                Instantiate(objectToPlace, PlacementPose.position, PlacementPose.rotation);
+                Instantiate(objectToPlace, new Vector3(0, 0, 11), Quaternion.identity);
+            }
         }
     }
 
@@ -54,7 +54,7 @@ public class ARTapToPlace : MonoBehaviour
         else
         {
             placementIndicator.SetActive(false);
-            //text.GetComponent<Text>().text = "the ray doesn't hit anything lol";
+            text.GetComponent<Text>().text = "the ray doesn't hit anything lol";
         }
     }
 
