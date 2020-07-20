@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Bullet") { 
+        if (col.gameObject.CompareTag( "Bullet")) { 
             var toObjectVec = col.gameObject.transform.position - this.transform.position;
             var forwardVec = this.transform.forward;
             var deg = Vector3.Dot(toObjectVec.normalized, forwardVec.normalized);
