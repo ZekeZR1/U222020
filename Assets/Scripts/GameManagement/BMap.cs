@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class BMap : MonoBehaviour
 {
+
+    public void LoadMap(string name)
+    {
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
