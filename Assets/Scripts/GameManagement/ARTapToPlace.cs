@@ -15,6 +15,7 @@ public class ARTapToPlace : MonoBehaviour
     private Pose PlacementPose;
     public GameObject text;
     private ARRaycastManager raycasttManager;
+    private bool isObjectPlaced_;
 
     [SerializeField]
     GameObject arCamera = default;
@@ -23,22 +24,36 @@ public class ARTapToPlace : MonoBehaviour
     {
         arOrigin = FindObjectOfType<ARSessionOrigin>();
         raycasttManager = arOrigin.GetComponent<ARRaycastManager>();
+        isObjectPlaced_ = false;
     }
 
     void Update()
     {
+        if (isObjectPlaced_)
+        {
+            return;
+        }
         
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
-        if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+
+        if (placementPoseIsValid)
+        {
+            objectToPlace.transform.position = PlacementPose.position;
+            objectToPlace.transform.rotation = PlacementPose.rotation;
+        }
+
+        if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) // && isObjectPlaced_ == false)
         {
             text.GetComponent<Text>().text = "Touched ";// + PlacementPose.position;
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 text.GetComponent<Text>().text = "Placed at " + PlacementPose.position;
-                Instantiate(objectToPlace, PlacementPose.position, PlacementPose.rotation);
-                Instantiate(objectToPlace, new Vector3(0, 0, 11), Quaternion.identity);
+                objectToPlace.transform.position = PlacementPose.position;
+                objectToPlace.transform.rotation = PlacementPose.rotation;
+                isObjectPlaced_ = true;
+                //Instantiate(objectToPlace, PlacementPose.position, PlacementPose.rotation);
             }
         }
     }
@@ -49,7 +64,6 @@ public class ARTapToPlace : MonoBehaviour
         {
             placementIndicator.SetActive(true);
             placementIndicator.transform.SetPositionAndRotation(PlacementPose.position, PlacementPose.rotation);
-            //text.GetComponent<Text>().text = PlacementPose.position.ToString();
         }
         else
         {
