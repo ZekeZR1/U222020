@@ -17,13 +17,15 @@ public class EnemyAttack : MonoBehaviour
     private GameObject ThrowingObject;
 
     //攻撃タイプ。
-    enum AttackType{
+    public enum AttackType{
         enFrontAttack,            //正面攻撃。
         enUpAttack,               //上攻撃。
         enRightAttack,            //右攻撃。
         enLeftAttack,             //左攻撃
         enAttackTypeNum           //攻撃の種類の数。
     };
+
+    public AttackType attackType = AttackType.enAttackTypeNum;      //攻撃タイプ。
 
     // Start is called before the first frame update
     void Start()
@@ -35,30 +37,36 @@ public class EnemyAttack : MonoBehaviour
     void Update()
     {
         //todo TEST.
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Attack(AttackType.enLeftAttack);
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Attack(AttackType.enUpAttack);
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Attack(AttackType.enFrontAttack);
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            Attack(AttackType.enRightAttack);
-        }
-
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+        //    Attack(AttackType.enLeftAttack);
+        //}
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    Attack(AttackType.enUpAttack);
+        //}
+        //if (Input.GetKeyDown(KeyCode.S))
+        //{
+        //    Attack(AttackType.enFrontAttack);
+        //}
+        //if (Input.GetKeyDown(KeyCode.D))
+        //{
+        //    Attack(AttackType.enRightAttack);
+        //}
+        //if(Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Attack(AttackType.enLeftAttack);
+        //    Attack(AttackType.enUpAttack);
+        //    Attack(AttackType.enFrontAttack);
+        //    Attack(AttackType.enRightAttack);
+        //}
     }
 
     /// <summary>
     /// 攻撃。
     /// </summary>
     /// <param name="attackNum">攻撃の番号</param>
-    void Attack(AttackType attackNum)
+    public void Attack(AttackType attackNum)
     {
         //攻撃パターンが存在していたなら。
         if (attackNum < AttackType.enAttackTypeNum)
@@ -79,13 +87,13 @@ public class EnemyAttack : MonoBehaviour
 
                     break;
 
-                case AttackType.enRightAttack:
+                case AttackType.enRightAttack:      //右攻撃のとき。
 
                     StartCoroutine(ParabolaAttack(AttackType.enRightAttack, endPos.position, flightTime, speedRate, gravity * heightRate));
 
                     break;
 
-                case AttackType.enLeftAttack:
+                case AttackType.enLeftAttack:       //左攻撃のとき。
 
                     StartCoroutine(ParabolaAttack(AttackType.enLeftAttack, endPos.position, flightTime, speedRate, gravity * heightRate));
 
@@ -100,7 +108,7 @@ public class EnemyAttack : MonoBehaviour
     /// <param name="flightTime">敵に玉が当たるまでの時間</param>
     /// <param name="speedRate">玉のスピード倍率</param>
     /// <returns>フレーム</returns>
-    private IEnumerator FrontAttack(Vector3 endPos, float flightTime, float speedRate)
+    public IEnumerator FrontAttack(Vector3 endPos, float flightTime, float speedRate)
     {
         // Ballオブジェクトの生成
         GameObject ball = Instantiate(ThrowingObject, transform.position, Quaternion.identity);
@@ -129,20 +137,26 @@ public class EnemyAttack : MonoBehaviour
     /// <param name="speedRate">玉のスピード倍率</param>
     /// <param name="gravity">攻撃にかかる重力</param>
     /// <returns></returns>
-    private IEnumerator ParabolaAttack(AttackType attackNum, Vector3 endPos, float flightTime, float speedRate, float gravity)
+    public IEnumerator ParabolaAttack(AttackType attackNum, Vector3 endPos, float flightTime, float speedRate, float gravity)
     {
         // Ballオブジェクトの生成
         GameObject ball = Instantiate(ThrowingObject, this.transform.position, Quaternion.identity);
 
         var startPos = transform.position; // 初期位置
 
+        var diff = endPos - startPos;      // 始点と終点の成分の差分; 
         var diffX = (endPos - startPos).x; // 始点と終点のx成分の差分
         var diffY = (endPos - startPos).y; // 始点と終点のy成分の差分
         var diffZ = (endPos - startPos).z; // 始点と終点のz成分の差分
 
+        var vn = (gravity * 0.5f * flightTime * flightTime) / flightTime;          // 鉛直方向の初速度vn
         var vnx = (diffX - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vn
-        var vny = (diffY - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vn
+        var vny = (diffY - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vny
         var vnz = (diffZ - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vn
+
+        Vector3 y = new Vector3(0, 1, 0);               //敵の直上ベクトル。
+        var crossVec = Vector3.Cross(diff, y);          //外積を使ってプレイヤー方向の垂線を求める。
+        var crossVecNormalize = crossVec.normalized;    //正規化。
 
         //放物線を描く玉の処理。
         for (var t = 0f; t < flightTime; t += (Time.deltaTime * speedRate))
@@ -152,37 +166,22 @@ public class EnemyAttack : MonoBehaviour
             switch(attackNum){
 
                 case AttackType.enUpAttack:       //上攻撃。
+
                     p.y = startPos.y + vny * t + 0.5f * gravity * t * t; // 鉛直方向の座標y
-                    p.y = startPos.y + vny * t + 0.5f * gravity * t * t; // 鉛直方向の座標y
+
                     break;
 
                 case AttackType.enRightAttack:    //右攻撃のとき。
-                    //X成分の差のほうが大きいとき。
-                    if (Mathf.Abs(diffX) > Mathf.Abs(diffZ))
-                    {
-                        p.x = startPos.x - vnx * t - 0.5f * gravity * t * t; // 鉛直方向の座標x
-                        continue;
-                    }
-                    //Z成分のほうが差が大きいとき。
-                    if (Mathf.Abs(diffX) < Mathf.Abs(diffZ)) 
-                    {
-                        
-                        p.z = startPos.z - vnz * t - 0.5f * gravity * t * t; // 鉛直方向の座標z
-                    }
-                        break;
+
+                    p += crossVecNormalize * (vn * t - 0.5f * gravity * t * t);// 鉛直方向の座標 x
+
+                    break;
 
                 case AttackType.enLeftAttack:     //左攻撃のとき。
-                    //X成分の差のほうが大きいとき。
-                    if (Mathf.Abs(diffX) > Mathf.Abs(diffZ))
-                    {
-                        p.x = startPos.x + vnx * t + 0.5f * gravity * t * t; // 鉛直方向の座標x
-                    }
-                    //Z成分のほうが差が大きいとき。
-                    if (Mathf.Abs(diffX) < Mathf.Abs(diffZ))
-                    {
-                        p.z = startPos.z - vnz * t - 0.5f * gravity * t * t; // 鉛直方向の座標z
-                    }
-                        break;
+                                           
+                    p += (-crossVecNormalize) * (vn * t - 0.5f * gravity * t * t);// 鉛直方向の座標 x
+
+                    break;
             }
 
             ball.transform.position = p;
