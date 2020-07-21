@@ -21,16 +21,18 @@ public class ShakeDetection : MonoBehaviour
     void Update()
     {
         acceleration = Input.acceleration;
-        if (acceleration.sqrMagnitude < shakeDetectionThreshold) return;
-
-        var arCamera = GameObject.FindGameObjectWithTag("MainCamera");
-        var d = Vector3.Dot(acceleration.normalized, arCamera.transform.forward.normalized);
-        stringBuiler.Clear();
-        stringBuiler.Append("Dot ret of Shake Dir : " + d + "Accelerate : " + acceleration);
-        if (Mathf.Abs(d) > 0.85f)
+        if (acceleration.sqrMagnitude < shakeDetectionThreshold)
         {
-            stringBuiler.Append(" Perfectly");
+            stringBuiler.Clear();
+            stringBuiler.Append("Shake State : None");
+            accelerationTextObj.GetComponent<Text>().text = stringBuiler.ToString();
+            return;
         }
+
+        //var arCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        //var d = Vector3.Dot(acceleration.normalized, arCamera.transform.forward.normalized);
+        stringBuiler.Clear();
+        stringBuiler.Append("Shake detected : Accelerate : " + acceleration);
         accelerationTextObj.GetComponent<Text>().text = stringBuiler.ToString();
     }
 }
