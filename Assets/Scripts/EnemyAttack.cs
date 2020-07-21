@@ -125,7 +125,9 @@ public class EnemyAttack : MonoBehaviour
             yield return null; //1フレーム経過
         }
 
-        ball.transform.position += endPos;
+        // 終点座標へ補正
+        ball.transform.position = endPos;
+        Destroy(ball);
     }
 
     /// <summary>
@@ -190,6 +192,8 @@ public class EnemyAttack : MonoBehaviour
 
         // 終点座標へ補正
         ball.transform.position = endPos;
+        //todo 処理が重いので、Deleteせずに再利用する。(配列とかに積んで)。
+        Destroy(ball);
     }
 }
 
