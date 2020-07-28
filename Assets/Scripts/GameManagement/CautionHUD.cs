@@ -10,7 +10,9 @@ public class CautionHUD : MonoBehaviour
     GameObject[] images_ = default;
     float[] timeDeactive;
 
-    private const float showSeconds = 2f;
+    public float redCautionTime_ = 0.5f; //`残り何秒の時点で赤い警告にするか
+    public float yelloCautionTime_ = 1f;　//残り何秒で赤い警告を出すか
+    public const float showSeconds = 2f; //警告は何秒間表示するか
 
     private enum eImage
     {
@@ -42,11 +44,11 @@ public class CautionHUD : MonoBehaviour
             }
 
             var remainTime = timeDeactive[i] - time;
-            if(remainTime <= 0.5)
+            if(remainTime <= redCautionTime_)
             {
                 images_[i].GetComponent<Image>().color = Color.red;
             }
-            else if(remainTime <= 1.0f)
+            else if(remainTime <= yelloCautionTime_)
             {
                 images_[i].GetComponent<Image>().color = Color.yellow;
             }
