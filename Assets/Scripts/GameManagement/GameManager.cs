@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
             hittenNotes += 0f;
         }
 
-        totalAccuracy = (hittenNotes / totalNotes);
+        totalAccuracy = (hittenNotes / totalNotes) * 100f;
         accTextObj.GetComponent<Text>().text = totalAccuracy.ToString();
     }
 
