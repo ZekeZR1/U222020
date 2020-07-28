@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     EnemyAttack enemyAttack;        //攻撃処理クラス。
+    public CautionHUD cautionHUD;          //攻撃の危険信号Image。
 
     private float timer = 0f;             //タイマー。
 
@@ -46,21 +47,25 @@ public class Enemy : MonoBehaviour
             {
                 playerState = PlayerState.enFrontAttack;
                 AttackOrder(EnemyAttack.AttackType.enFrontAttack);
+                cautionHUD.CenterCaution();
             }
             else if(value > 0.25 && value <= 0.5)       //上攻撃。
             {
                 playerState = PlayerState.enUpAttack;
                 AttackOrder(EnemyAttack.AttackType.enUpAttack);
+                cautionHUD.AboveCaution();
             }
             else if(value >0.5 && value <= 0.75)        //右攻撃。
             {
                 playerState = PlayerState.enRightAttack;
                 AttackOrder(EnemyAttack.AttackType.enRightAttack);
+                cautionHUD.RightCaution();
             }
             else        //左攻撃。
             {
                 playerState = PlayerState.enLeftAttack;
                 AttackOrder(EnemyAttack.AttackType.enLeftAttack);
+                cautionHUD.LeftCaution();
             }
         }
     }
