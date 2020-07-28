@@ -151,7 +151,7 @@ public class EnemyAttack : MonoBehaviour
         var diffY = (endPos - startPos).y; // 始点と終点のy成分の差分
         var diffZ = (endPos - startPos).z; // 始点と終点のz成分の差分
 
-        var vn = (gravity * 0.5f * flightTime * flightTime) / flightTime;          // 鉛直方向の初速度vn
+        var vn =  (gravity * 0.5f * flightTime * flightTime) / flightTime;          // 鉛直方向の初速度vn
         var vnx = (diffX - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vn
         var vny = (diffY - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vny
         var vnz = (diffZ - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vn
