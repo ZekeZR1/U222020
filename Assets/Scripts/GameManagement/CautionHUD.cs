@@ -59,31 +59,46 @@ public class CautionHUD : MonoBehaviour
         }
     }
 
-    public void LeftCaution()
+    //右側の攻撃を通知
+    public void NotifyRightShot()
     {
-        images_[(int)eImage.left].SetActive(true);
-        timeDeactive[(int)eImage.left] = Time.time + showSeconds;
+        LeftCaution();
     }
 
 
-    public void RightCaution()
+    //左側の攻撃を通知
+    public void NotifyLeftShot()
     {
-        images_[(int)eImage.right].SetActive(true);
-        timeDeactive[(int)eImage.right] = Time.time + showSeconds;
+        RightCaution();
     }
 
 
-    public void AboveCaution()
+    //中心の攻撃を通知
+    public void NotifyCenterShot()
+    {
+        images_[(int)eImage.center].SetActive(true);
+        timeDeactive[(int)eImage.center] = Time.time + showSeconds;
+    }
+
+
+    //上側の攻撃を通知
+    public void NotifyAboveShot()
     {
         images_[(int)eImage.above].SetActive(true);
         timeDeactive[(int)eImage.above] = Time.time + showSeconds;
     }
 
 
-    public void CenterCaution()
+    void LeftCaution()
     {
-        images_[(int)eImage.center].SetActive(true);
-        timeDeactive[(int)eImage.center] = Time.time + showSeconds;
+        images_[(int)eImage.left].SetActive(true);
+        timeDeactive[(int)eImage.left] = Time.time + showSeconds;
     }
 
+
+    void RightCaution()
+    {
+        images_[(int)eImage.right].SetActive(true);
+        timeDeactive[(int)eImage.right] = Time.time + showSeconds;
+    }
 }

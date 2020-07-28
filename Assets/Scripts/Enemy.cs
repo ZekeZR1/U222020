@@ -47,25 +47,25 @@ public class Enemy : MonoBehaviour
             {
                 playerState = PlayerState.enFrontAttack;
                 AttackOrder(EnemyAttack.AttackType.enFrontAttack);
-                cautionHUD.CenterCaution();
+                cautionHUD.NotifyCenterShot();
             }
             else if(value > 0.25 && value <= 0.5)       //上攻撃。
             {
                 playerState = PlayerState.enUpAttack;
                 AttackOrder(EnemyAttack.AttackType.enUpAttack);
-                cautionHUD.AboveCaution();
+                cautionHUD.NotifyAboveShot();
             }
             else if(value >0.5 && value <= 0.75)        //右攻撃。
             {
                 playerState = PlayerState.enRightAttack;
                 AttackOrder(EnemyAttack.AttackType.enRightAttack);
-                cautionHUD.RightCaution();
+                cautionHUD.NotifyRightShot();
             }
             else        //左攻撃。
             {
                 playerState = PlayerState.enLeftAttack;
                 AttackOrder(EnemyAttack.AttackType.enLeftAttack);
-                cautionHUD.LeftCaution();
+                cautionHUD.NotifyLeftShot();
             }
         }
     }
