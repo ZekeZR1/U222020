@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     public CautionHUD cautionHUD;          //攻撃の危険信号Image。
 
     private float timer = 0f;             //タイマー。
+    private bool isRunning = false;
 
     private enum PlayerState        //プレイヤーの状態。
     {
@@ -21,6 +22,17 @@ public class Enemy : MonoBehaviour
 
     PlayerState playerState = PlayerState.enStateNum;       //プレイヤーの状態を保持する。
 
+    public void StartShooting()
+    {
+        isRunning = true;
+    }
+
+    public void StopShooting()
+    {
+        isRunning = false;
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,8 +42,11 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //todo 仮。
-        AttackProcessing();
+        if (isRunning)
+        {
+            //todo 仮。
+            AttackProcessing();
+        }
     }
 
     //攻撃処理。仮。

@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class ProgressBar : MonoBehaviour
 {   
     [SerializeField]
-    float fillVal = 1.0f;
-    [SerializeField]
     GameObject gameManagerObj_ = default;
     GameManager gmg_;
     Image image_;
