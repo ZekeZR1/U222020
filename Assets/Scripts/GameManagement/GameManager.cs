@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
@@ -19,19 +20,22 @@ public class GameManager : MonoBehaviour
     GameObject resultObj = default;
 
     //Game Progress
+    public float progress_;
+
     [SerializeField]
     float gameTimeSec_;
-    public float progress_;
+
     private float startTime_;
     private float elpasedSec_ = 0f;
 
     //Game Score
-    private StringBuilder stringBuilder_;
-    private int score;
-    private int totalNotes = 0;
-    private float hittenNotes = 0f;
+    public uint score;
+    public uint combo_;
     public float totalAccuracy = 0f;
-    public int combo_;
+
+    private StringBuilder stringBuilder_;
+    private int totalNotes = 0; 
+    private float hittenNotes = 0f;
 
     void Start()
     {
@@ -48,7 +52,6 @@ public class GameManager : MonoBehaviour
         elpasedSec_ = currentTime - startTime_;
         progress_ = (elpasedSec_) / gameTimeSec_;
 
-        Debug.Log(progress_);
         if (elpasedSec_ >= 1f)
         {
             enemy_.StartShooting();
@@ -81,16 +84,19 @@ public class GameManager : MonoBehaviour
         {
             //Perfect
             hittenNotes += 1f;
+            score += combo_ + 300;
         }
         else if (acc >= greatAcc)
         {
             //Great
             hittenNotes += 0.8f;
+            score += combo_ / 2 + 100;
         }
         else if (acc >= goodAcc)
         {
             //Good
             hittenNotes += 0.5f;
+            score += combo_ / 4 + 50;
         }
         else
         {

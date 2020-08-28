@@ -21,7 +21,7 @@ public class Result : MonoBehaviour
         score_stb = new StringBuilder("精度 : ",30);
         score_stb.Append(gm.totalAccuracy.ToString("F2"));
         score_stb.Append("%\nScore : ");
-        score_stb.Append("0");
+        score_stb.Append(gm.score.ToString());
         resultTextDataObj.GetComponent<Text>().text = score_stb.ToString();
     }
 
